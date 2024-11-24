@@ -4,16 +4,16 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
+import * as Screens from "@/screens"
+import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
 import { NavigationContainer, NavigatorScreenParams } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
-import * as Screens from "@/screens"
+import { ComponentProps } from "react"
 import Config from "../config"
 import { useStores } from "../models"
 import { DemoNavigator, DemoTabParamList } from "./DemoNavigator"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
-import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
-import { ComponentProps } from "react"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -33,6 +33,8 @@ export type AppStackParamList = {
   Login: undefined
   Demo: NavigatorScreenParams<DemoTabParamList>
   // 🔥 Your screens go here
+  Main: undefined
+  Towel: undefined
   // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
 }
 
@@ -83,6 +85,8 @@ const AppStack = observer(function AppStack() {
       )}
 
       {/** 🔥 Your screens go here */}
+      <Stack.Screen name="Main" component={Screens.MainScreen} />
+      <Stack.Screen name="Towel" component={Screens.TowelScreen} />
       {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
     </Stack.Navigator>
   )

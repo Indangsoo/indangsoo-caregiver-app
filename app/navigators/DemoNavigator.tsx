@@ -1,20 +1,21 @@
+import type { ThemedStyle } from "@/theme"
+import { useAppTheme } from "@/utils/useAppTheme"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps } from "@react-navigation/native"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
 import { translate } from "../i18n"
-import { DemoCommunityScreen, DemoShowroomScreen, DemoDebugScreen } from "../screens"
+import { DemoCommunityScreen, DemoDebugScreen, DemoShowroomScreen, MainScreen } from "../screens"
 import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
-import type { ThemedStyle } from "@/theme"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
-import { useAppTheme } from "@/utils/useAppTheme"
 
 export type DemoTabParamList = {
   DemoCommunity: undefined
   DemoShowroom: { queryIndex?: string; itemIndex?: string }
   DemoDebug: undefined
   DemoPodcastList: undefined
+  Main: undefined
 }
 
 /**
@@ -94,6 +95,17 @@ export function DemoNavigator() {
         component={DemoDebugScreen}
         options={{
           tabBarLabel: translate("demoNavigator:debugTab"),
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Main"
+        component={MainScreen}
+        options={{
+          tabBarLabel: "main",
           tabBarIcon: ({ focused }) => (
             <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
           ),
