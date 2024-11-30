@@ -5,9 +5,7 @@ import { CompositeScreenProps } from "@react-navigation/native"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Icon } from "../components"
-import { translate } from "../i18n"
-import { DemoCommunityScreen, DemoDebugScreen, DemoShowroomScreen, MainScreen } from "../screens"
-import { DemoPodcastListScreen } from "../screens/DemoPodcastListScreen"
+import { CamScreen, LogScreen, MainScreen } from "../screens"
 import { AppStackParamList, AppStackScreenProps } from "./AppNavigator"
 
 export type DemoTabParamList = {
@@ -16,6 +14,8 @@ export type DemoTabParamList = {
   DemoDebug: undefined
   DemoPodcastList: undefined
   Main: undefined
+  Log: undefined
+  Cam: undefined
 }
 
 /**
@@ -57,6 +57,39 @@ export function DemoNavigator() {
       }}
     >
       <Tab.Screen
+        name="Main"
+        component={MainScreen}
+        options={{
+          tabBarLabel: "홈",
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="components" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Log"
+        component={LogScreen}
+        options={{
+          tabBarLabel: "최근 기록",
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="menu" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Cam"
+        component={CamScreen}
+        options={{
+          tabBarLabel: "실시간 영상",
+          tabBarIcon: ({ focused }) => (
+            <Icon icon="view" color={focused ? colors.tint : colors.tintInactive} size={30} />
+          ),
+        }}
+      />
+
+      {/* <Tab.Screen
         name="DemoShowroom"
         component={DemoShowroomScreen}
         options={{
@@ -65,52 +98,7 @@ export function DemoNavigator() {
             <Icon icon="components" color={focused ? colors.tint : colors.tintInactive} size={30} />
           ),
         }}
-      />
-
-      <Tab.Screen
-        name="DemoCommunity"
-        component={DemoCommunityScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator:communityTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="community" color={focused ? colors.tint : colors.tintInactive} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="DemoPodcastList"
-        component={DemoPodcastListScreen}
-        options={{
-          tabBarAccessibilityLabel: translate("demoNavigator:podcastListTab"),
-          tabBarLabel: translate("demoNavigator:podcastListTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="podcast" color={focused ? colors.tint : colors.tintInactive} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="DemoDebug"
-        component={DemoDebugScreen}
-        options={{
-          tabBarLabel: translate("demoNavigator:debugTab"),
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Main"
-        component={MainScreen}
-        options={{
-          tabBarLabel: "main",
-          tabBarIcon: ({ focused }) => (
-            <Icon icon="debug" color={focused ? colors.tint : colors.tintInactive} size={30} />
-          ),
-        }}
-      />
+      /> */}
     </Tab.Navigator>
   )
 }
