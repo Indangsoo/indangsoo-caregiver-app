@@ -34,6 +34,7 @@ export const LogScreen: FC<LogScreenProps> = observer(function LogScreen() {
   const fetchLogs = useCallback(async () => {
     try {
       const res = await fetch("http://59.187.251.226:54549/getevents")
+      if (!res.ok) throw new Error("Failed to fetch logs")
       const logs = await res.json()
       setLogs(logs.filter((log: LogItem) => log.event_type !== "towel_change"))
     } catch (error) {

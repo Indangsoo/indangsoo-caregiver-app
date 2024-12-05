@@ -11,11 +11,11 @@ export default function useRealtimeData<T>(query: string) {
   useEffect(() => {
     const socket = io(URI)
     const fetchData = async () => {
-      console.log(`${URI}${query}/data`)
       try {
         const response = await fetch(`${URI}${query}/data`)
+        if (!response.ok) throw new Error("Failed to fetch data")
         const result = await response.json()
-        console.log(result)
+
         setData(result)
       } catch (err: any) {
         setError(err)
