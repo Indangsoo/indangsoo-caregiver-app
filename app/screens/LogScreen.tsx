@@ -87,6 +87,6 @@ const $root: ViewStyle = {
 }
 
 const $title: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontFamily: typography.primary.normal,
+  fontFamily: typography.primary.bold,
   fontSize: 18,
 })

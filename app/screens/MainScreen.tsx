@@ -1,6 +1,6 @@
 import { Checkbox, Screen, Text, TowelProgressBar } from "@/components"
 import { AppStackScreenProps } from "@/navigators"
-import { ThemedStyle } from "@/theme"
+import { spacing, ThemedStyle } from "@/theme"
 import { useAppTheme } from "@/utils/useAppTheme"
 import useRealtimeData from "@/utils/useRealtimeData"
 import { observer } from "mobx-react-lite"
@@ -86,8 +86,8 @@ const $root: ViewStyle = {
 const $container: ViewStyle = {
   display: "flex",
   flexDirection: "column",
-  width: "100%",
-  height: "100%",
+  paddingTop: spacing.lg + spacing.xl,
+  paddingHorizontal: spacing.lg,
   justifyContent: "flex-start",
   gap: 30,
   alignItems: "flex-start",
