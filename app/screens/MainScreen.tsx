@@ -4,7 +4,7 @@ import { ThemedStyle } from "@/theme"
 import { useAppTheme } from "@/utils/useAppTheme"
 import useRealtimeData from "@/utils/useRealtimeData"
 import { observer } from "mobx-react-lite"
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "@/models"
@@ -18,15 +18,41 @@ interface DangerData {
 export const MainScreen: FC<MainScreenProps> = observer(function MainScreen() {
   const { themed } = useAppTheme()
   const {data: indoorDanger, error: indoorDangerError} = useRealtimeData<DangerData>("/indoor/danger")
-  const {data: carDanger, error: carDangerError} = useRealtimeData<DangerData>("/car/danger")
+  const {data: carOpen, error: carOpenError} = useRealtimeData<DangerData>("/car/open")
+  const [isIndoorChecked, setIsIndoorChecked] = useState(false)
+  const [isCarOpenChecked, setIsCarOpenChecked] = useState(false)
 
-  const checkRecentDanger = (keyTime: number) => {
+  console.log("data:", carOpen, ", errorMsg:", carOpenError?.message)
+
+  const checkRecent = (keyTime: number, time:number) => {
     const dangerTime = new Date(keyTime * 1000)
     const currentTime = new Date()
     const diff = currentTime.getTime() - dangerTime.getTime()
     // 5 min
-    return diff < 1000 * 60 * 5
+    return diff < time
   }
+
+  useEffect(() => {
+    if (indoorDanger) {
+      const doorInterval = setInterval(() => {
+        setIsIndoorChecked(indoorDanger ? checkRecent(indoorDanger.key, 1000 * 30) : false)
+      }, 1000)
+      return () => {
+        clearInterval(doorInterval)
+        setIsIndoorChecked(false)
+      }
+    }
+    if (carOpen) {
+      const carInterval = setInterval(() => {
+        setIsCarOpenChecked(carOpen ? checkRecent(carOpen.key,  1000 * 10) : false)
+      }, 1000)
+      return () => {
+        clearInterval(carInterval)
+        setIsCarOpenChecked(false)
+      }
+    }
+  }, [indoorDanger, carOpen])
+
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
@@ -43,11 +69,11 @@ export const MainScreen: FC<MainScreenProps> = observer(function MainScreen() {
       <TowelProgressBar style={$progressBar} />
       <View style={$checkboxContainer}>
         <Text text="위험 상황 여부" style={themed($checkboxText)} />
-        <Checkbox value={indoorDanger ? checkRecentDanger(indoorDanger.key) : false}/>
+        <Checkbox value={isIndoorChecked}/>
       </View>
       <View style={$checkboxContainer}>
         <Text text="차량 열림 여부" style={themed($checkboxText)} />
-        <Checkbox value={carDanger ? checkRecentDanger(carDanger.key) : false} />
+        <Checkbox value={isCarOpenChecked} />
       </View>
     </Screen>
   )

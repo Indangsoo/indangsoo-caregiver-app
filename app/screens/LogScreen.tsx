@@ -11,7 +11,7 @@ import { RefreshControl } from "react-native-gesture-handler"
 
 interface LogScreenProps extends AppStackScreenProps<"Log"> {}
 
-type EventType = "car_danger" | "stuff_call" | "indoor_danger" | "towel_change"
+type EventType = "car_danger" | "stuff_call" | "indoor_danger" | "towel_change" | "car_open"
 
 interface LogItem {
   time: number
@@ -24,6 +24,7 @@ const eventTypeMap: Record<EventType, string> = {
   stuff_call: "물건 찾기",
   indoor_danger: "실내 비상 호출",
   towel_change: "수건 개수 변경",
+  car_open: "차량 문 열림",
 }
 
 export const LogScreen: FC<LogScreenProps> = observer(function LogScreen() {
