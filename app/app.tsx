@@ -16,11 +16,10 @@ if (__DEV__) {
   // If you turn it off in metro.config.js, you'll have to manually import it.
   require("./devtools/ReactotronConfig.ts")
 }
-import messaging from '@react-native-firebase/messaging'
+
 import { useFonts } from "expo-font"
 import * as Linking from "expo-linking"
 import { useEffect, useState } from "react"
-import { Alert } from 'react-native'
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
@@ -62,10 +61,6 @@ interface AppProps {
   hideSplashScreen: () => Promise<boolean>
 }
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  console.log("[Background Remote Message]", remoteMessage)
-})
-
 /**
  * This is the root component of our app.
  * @param {AppProps} props - The props for the `App` component.
@@ -82,25 +77,10 @@ function App(props: AppProps) {
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad)
   const [isI18nInitialized, setIsI18nInitialized] = useState(false)
 
-  const getFcmToken = async () => {
-    const fcmToken = await messaging().getToken()
-    console.log("[FCM Token] ", fcmToken)
-  }
-
   useEffect(() => {
     initI18n()
       .then(() => setIsI18nInitialized(true))
       .then(() => loadDateFnsLocale())
-  }, [])
-
-  useEffect(() => {
-    getFcmToken()
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-      const msg = JSON.stringify(remoteMessage)
-      if (remoteMessage.notification)
-      Alert.alert(remoteMessage.notification.title || "", remoteMessage.notification.body)
-    })
-    return unsubscribe
   }, [])
 
   const { rehydrated } = useInitialRootStore(() => {

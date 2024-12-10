@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Checkbox, Screen, Text, TowelProgressBar } from "@/components"
 import { AppStackScreenProps } from "@/navigators"
 import { spacing, ThemedStyle } from "@/theme"
@@ -17,14 +18,13 @@ interface DangerData {
 
 export const MainScreen: FC<MainScreenProps> = observer(function MainScreen() {
   const { themed } = useAppTheme()
-  const {data: indoorDanger, error: indoorDangerError} = useRealtimeData<DangerData>("/indoor/danger")
-  const {data: carOpen, error: carOpenError} = useRealtimeData<DangerData>("/car/open")
+  const { data: indoorDanger, error: indoorDangerError } =
+    useRealtimeData<DangerData>("/indoor/danger")
+  const { data: carOpen, error: carOpenError } = useRealtimeData<DangerData>("/car/open")
   const [isIndoorChecked, setIsIndoorChecked] = useState(false)
   const [isCarOpenChecked, setIsCarOpenChecked] = useState(false)
 
-  console.log("data:", carOpen, ", errorMsg:", carOpenError?.message)
-
-  const checkRecent = (keyTime: number, time:number) => {
+  const checkRecent = (keyTime: number, time: number) => {
     const dangerTime = new Date(keyTime * 1000)
     const currentTime = new Date()
     const diff = currentTime.getTime() - dangerTime.getTime()
@@ -44,13 +44,14 @@ export const MainScreen: FC<MainScreenProps> = observer(function MainScreen() {
     }
     if (carOpen) {
       const carInterval = setInterval(() => {
-        setIsCarOpenChecked(carOpen ? checkRecent(carOpen.key,  1000 * 10) : false)
+        setIsCarOpenChecked(carOpen ? checkRecent(carOpen.key, 1000 * 10) : false)
       }, 1000)
       return () => {
         clearInterval(carInterval)
         setIsCarOpenChecked(false)
       }
     }
+    return undefined
   }, [indoorDanger, carOpen])
 
   // Pull in one of our MST stores
@@ -69,7 +70,7 @@ export const MainScreen: FC<MainScreenProps> = observer(function MainScreen() {
       <TowelProgressBar style={$progressBar} />
       <View style={$checkboxContainer}>
         <Text text="위험 상황 여부" style={themed($checkboxText)} />
-        <Checkbox value={isIndoorChecked}/>
+        <Checkbox value={isIndoorChecked} />
       </View>
       <View style={$checkboxContainer}>
         <Text text="차량 열림 여부" style={themed($checkboxText)} />
@@ -97,7 +98,7 @@ const $container: ViewStyle = {
 const $title: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.bold,
   fontSize: 18,
-  marginBottom: 30
+  marginBottom: 30,
 })
 
 const $progressBar: ViewStyle = {
